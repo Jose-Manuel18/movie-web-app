@@ -6,10 +6,9 @@ import { Carousel } from "react-responsive-carousel"
 
 export default function Home() {
   return (
-    <div className="flex bg-backgroundColor  flex-col ">
-      <div className="flex flex-row mb-12">
+    <div className="bg-backgroundColor">
+      <div className="flex mb-12">
         <Avatar src="https://bit.ly/tioluwani-kolawole" />
-
         <Icon
           boxSize={6}
           color="white"
@@ -18,9 +17,10 @@ export default function Home() {
           Blur
         />
       </div>
+
       <SlideShow />
 
-      <div className="flex flex-row">
+      <div className="flex">
         <div className="text-white">Movies</div>
         <div className="ml-auto text-gray-700">View all</div>
       </div>

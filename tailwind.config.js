@@ -4,6 +4,8 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/flowbite-react/**/*.js",
+    "./public/**/*.html",
 
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -90,5 +92,5 @@ module.exports = {
     },
   },
 
-  plugins: [],
+  plugins: [require("flowbite/plugin")],
 }
