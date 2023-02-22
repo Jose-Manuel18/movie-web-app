@@ -6,15 +6,18 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "image.tmdb.org",
-        pathname: "/t/p/w500/**",
+        pathname: "/t/p/original/**",
       },
       {
         protocol: "https",
         hostname: "unsplash.com",
-
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "i.stack.imgur.com",
+      },
     ],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
