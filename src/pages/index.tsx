@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { BigPoster, Button, MovieRating } from "@/components/index";
+import { BigPoster, Button } from "@/components/index";
 
 import { MoviesList } from "@/components/MoviesList";
 
@@ -18,6 +18,24 @@ export interface CastProps {
   credit_id: string;
   cast_id: number;
 }
+export interface MoviesProps {
+  adult?: boolean;
+  backdrop_path: string;
+  genre_ids?: number[];
+  id: number;
+  original_language?: string;
+  original_title?: string;
+  overview?: string;
+  poster_path?: string;
+  release_date?: string;
+  title?: string;
+  video?: boolean;
+  vote_average?: number;
+  vote_count?: number;
+}
+export interface MovieData {
+  results: MoviesProps[];
+}
 export default function Home() {
   const movies = {
     id: 505642,
@@ -30,23 +48,19 @@ export default function Home() {
   };
 
   return (
-    <>
-      <BigPoster path={movies.poster_path}>
-        {/* <div className="lg:grid lg:grid-cols-2 "> */}
-        <Description
-          movieId={movies.id}
-          title={movies.title}
-          overview={movies.overview}
-          rating={movies.vote_average}
-          voteCount={movies.vote_count}
-        />
+    <BigPoster path={movies.poster_path}>
+      <Description
+        movieId={movies.id}
+        title={movies.title}
+        overview={movies.overview}
+        rating={movies.vote_average}
+        voteCount={movies.vote_count}
+      />
 
-        <TopCast movie_id={movies.id} />
-        <MoviesList />
+      <TopCast movie_id={movies.id} />
+      <MoviesList />
 
-        {/* </div> */}
-        <Button>Watch Trailer</Button>
-      </BigPoster>
-    </>
+      <Button>Watch Trailer</Button>
+    </BigPoster>
   );
 }

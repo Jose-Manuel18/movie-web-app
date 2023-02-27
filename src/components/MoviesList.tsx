@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { MovieData, MoviesProps } from "@/State/Movies";
 import { useQuery } from "@tanstack/react-query";
-import { Loading } from "./loadings/Loading";
+
 import { LoadingMovieList } from "./loadings/LoadingMovieList";
+import { motion } from "framer-motion";
+import { MovieData, MoviesProps } from "@/pages";
 
 interface MoviesListProps {
   movies?: MoviesProps;
@@ -12,12 +13,7 @@ interface MoviesListProps {
   title?: string;
   poster_path?: string;
 }
-export function MoviesList({
-  onClick,
-  movies,
-  title,
-  poster_path,
-}: MoviesListProps) {
+export function MoviesList({ onClick }: MoviesListProps) {
   const { isLoading, error, data } = useQuery<MovieData>(
     ["popularMovies"],
     async () =>
@@ -25,14 +21,14 @@ export function MoviesList({
         `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_MOVIE_DB_KEY}&languages=en-US`,
       ).then((res) => res.json()),
   );
-  const amount = data && data.results ? data.results.length : 10;
+  // const amount = data && data.results ? data.results.length : 10;
   if (error) return null;
-  if (isLoading) return <LoadingMovieList amount={amount} />;
 
   return (
-    <div className="lg:mb-5">
-      <h1 className="text-white text-lg font-medium px-4">Movies</h1>
-      <div className="flex flex-nowrap overflow-x-auto">
+    <div>
+      <h1 className=" px-4 text-lg font-medium text-white">Movies</h1>
+      {isLoading && <LoadingMovieList amount={10} />}
+      <div className="flex flex-nowrap overflow-x-auto  lg:relative">
         {data?.results.map((items: MoviesProps) => {
           return (
             <Link
@@ -44,32 +40,40 @@ export function MoviesList({
                 },
               }}
             >
-              <div
-                className="flex flex-col p-2 items-center justify-center animate__animated animate__fadeIn"
-                onClick={onClick}
+              <motion.div
+                layout
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                whileInView={{ opacity: 1 }}
+                initial={{ opacity: 0.5 }}
               >
-                <Image
-                  className={` ${
-                    window.innerWidth >= 976
-                      ? `min-w-[170px] min-h-[100px] max-w-[170px] max-h-[100px]`
-                      : `min-w-[75px] min-h-[75px] max-w-[75px] max-h-[110px] `
-                  }   rounded-md `}
-                  alt="Movie props"
-                  src={
-                    typeof window !== "undefined" && window.innerWidth >= 976
-                      ? `https://image.tmdb.org/t/p/original${items.backdrop_path}`
-                      : `https://image.tmdb.org/t/p/original${items.poster_path}`
-                  }
-                  width={75}
-                  height={100}
-                  loading="lazy"
-                />
-                <div className="flex  justify-center w-[100px]">
-                  <div className="text-[12px] text-center text-white ">
-                    {items.title}
+                <div
+                  className=" flex flex-col items-center justify-center p-2"
+                  onClick={onClick}
+                >
+                  <Image
+                    className={` ${
+                      window.innerWidth >= 976
+                        ? `max-h-[100px] min-h-[100px] min-w-[170px] max-w-[170px]`
+                        : `max-h-[110px] min-h-[75px] min-w-[75px] max-w-[75px] `
+                    }   rounded-md `}
+                    alt="Movie props"
+                    src={
+                      typeof window !== "undefined" && window.innerWidth >= 976
+                        ? `https://image.tmdb.org/t/p/original${items.backdrop_path}`
+                        : `https://image.tmdb.org/t/p/original${items.poster_path}`
+                    }
+                    width={75}
+                    height={100}
+                    loading="lazy"
+                  />
+                  <div className="flex  w-[100px] justify-center">
+                    <div className="text-center text-[12px] text-white ">
+                      {items.title}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </Link>
           );
         })}

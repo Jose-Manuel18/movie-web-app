@@ -1,6 +1,6 @@
 import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { MoviesProps } from "@/State/Movies";
+
 import {
   BigPoster,
   Button,
@@ -8,22 +8,24 @@ import {
   MoviesList,
   TopCast,
 } from "@/components";
-import { useRouter } from "next/router";
+import { MoviesProps } from "../";
+
+import { useState } from "react";
+import { Modal } from "@/components/Modal";
 
 interface Props {
   movie: MoviesProps;
 }
 
 export default function MoviePage({ movie }: Props) {
-  const router = useRouter();
-
-  if (router.isReady) {
-    console.log("mmg");
-  }
+  const [isOpen, setIsOpen] = useState(false);
+  // const router = useRouter();
+  // if (!router.isReady) return <div>Loading...</div>;
+  // console.log(router.isReady);
 
   return (
     <>
-      <BigPoster isReady={router.isReady} path={movie.backdrop_path}>
+      <BigPoster isOpen={isOpen} path={movie.backdrop_path}>
         <Description
           title={movie.title}
           overview={movie.overview}
@@ -31,9 +33,16 @@ export default function MoviePage({ movie }: Props) {
           rating={movie.vote_average}
           voteCount={movie.vote_count}
         />
+
         <TopCast movie_id={movie.id} />
+
         <MoviesList />
-        <Button>Play trailer</Button>
+
+        <Button onClick={() => setIsOpen(!isOpen)}>Play trailer</Button>
+        <Modal Open={isOpen}>
+          <div>hi</div>
+          <Button onClick={() => setIsOpen(!isOpen)}>Close modal</Button>
+        </Modal>
       </BigPoster>
     </>
   );
@@ -45,7 +54,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_MOVIE_DB_KEY}&language=en-US&page=1`,
   );
 
-  const paths = data?.results.map((movie: MoviesProps) => ({
+  const paths = data?.results?.map((movie: MoviesProps) => ({
     params: { id: movie.id.toString() },
   }));
 

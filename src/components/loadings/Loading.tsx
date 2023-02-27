@@ -5,7 +5,7 @@ interface amountProp {
 }
 export function Loading({ amount }: amountProp) {
   return (
-    <div className="flex flex-row m-0 p-0">
+    <div className="m-0 flex flex-row p-0">
       {Array.from({ length: amount }).map((_, index) => {
         return (
           <Fragment key={index}>

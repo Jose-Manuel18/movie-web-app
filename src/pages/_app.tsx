@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
+
 import {
   QueryClient,
   QueryClientProvider,
@@ -15,9 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
-          <ChakraProvider>
-            <Component {...pageProps} />
-          </ChakraProvider>
+          <Component {...pageProps} />
         </Hydrate>
       </QueryClientProvider>
     </RecoilRoot>

@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { Skeleton, Spinner } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import { useRouter } from "next/router";
 
+import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import Image from "next/image";
 import { LoadingCast } from "./loadings/LoadingCast";
+
 export interface TopCastProps {
   cast?: CastProps[];
   movie_id?: number;
@@ -26,41 +26,49 @@ export function TopCast({ movie_id }: TopCastProps) {
       ).then((res) => res.json()),
   );
 
-  const amount = data && data.cast ? data.cast.length : 10;
-  console.log(amount);
+  // const amount = data && data.cast ? data.cast.length : 10;
+  // console.log(amount);
 
   if (error) return null;
+  console.log(isLoading);
+  console.log(data);
 
-  if (isLoading) return <LoadingCast amount={10} />;
+  // if (isLoading)
+  //   return <div className="min-h=[100px] max-h-[100px] bg-notGreen"></div>;
 
   return (
-    <div className="lg:order-last ">
-      <h1 className="text-white  text-lg font-medium px-4  ">Cast</h1>
-
-      <div className="flex flex-nowrap overflow-x-auto ">
+    <div className=" lg:relative lg:order-last lg:max-h-[200px] lg:min-h-[200px]">
+      <h1 className="px-4 text-lg font-medium text-white ">Cast</h1>
+      {isLoading && <LoadingCast amount={10} />}
+      <div className="flex  flex-nowrap overflow-x-auto">
         {data?.cast?.map((items, index) => {
           return (
-            <div
+            <motion.div
+              layout
+              whileHover={{ scale: 1.05 }}
               key={index}
-              className="flex flex-col px-2 items-center animate__animated animate__fadeIn"
+              className="mt-2 cursor-pointer"
+              whileTap={{ scale: 0.95 }}
             >
-              <Image
-                className="rounded-full max-h-[60px] min-h-[60px] min-w-[60px] object-cover "
-                src={
-                  items.profile_path === null
-                    ? "https://i.stack.imgur.com/l60Hf.png"
-                    : `https://image.tmdb.org/t/p/original${items.profile_path}`
-                }
-                alt="Cast Photo"
-                width={60}
-                height={60}
-                loading="lazy"
-              />
+              <div className=" flex flex-col items-center px-2">
+                <Image
+                  className="max-h-[60px] min-h-[60px] min-w-[60px] rounded-full object-cover "
+                  src={
+                    items.profile_path === null
+                      ? "https://i.stack.imgur.com/l60Hf.png"
+                      : `https://image.tmdb.org/t/p/original${items.profile_path}`
+                  }
+                  alt="Cast Photo"
+                  width={60}
+                  height={60}
+                  loading="lazy"
+                />
 
-              <div className="text-white text-[12px] text-center">
-                {items.name}
+                <div className="text-center text-[12px] text-white">
+                  {items.name}
+                </div>
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>

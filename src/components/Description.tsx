@@ -1,7 +1,8 @@
-import { MoviesProps } from "@/State/Movies";
 import { useQuery } from "@tanstack/react-query";
 import ReadMore from "@/components/ReadMore";
 import { MovieRating } from "./MovieRating";
+import { motion } from "framer-motion";
+import { MoviesProps } from "@/pages";
 
 export interface DescriptionProps {
   runtime?: number;
@@ -32,33 +33,44 @@ export function Description({
       await fetch(
         `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_MOVIE_DB_KEY}&languages=en-US`,
       ).then((res) => res.json()),
+    { staleTime: 1000 },
   );
   const release_date = data?.release_date;
   const date = release_date ? new Date(release_date) : undefined;
   const year = date ? date.getFullYear() : "";
 
   if (error) return null;
+  if (isLoading) return <div className="min-h-[10px]" />;
+
   return (
-    <div className="flex flex-col m-5 animate__animated animate__fadeIn">
-      <p className="text-white font-bold pb-2 text-lg lg:text-5xl">{title}</p>
-      <div className="lg:flex lg:flex-col lg:pb-3">
-        <div className=" lg:order-1">
+    <motion.div
+      animate={{
+        opacity: 1,
+      }}
+      transition={{ duration: 0.5, ease: "easeInOut", damping: 10 }}
+      initial={{ opacity: 0 }}
+      layout
+    >
+      {/* animate__animated animate__fadeIn */}
+      <div className="m-5 flex flex-col lg:max-h-[150px] lg:min-h-[150px]">
+        <p className="pb-2 text-lg font-bold text-white lg:text-5xl">{title}</p>
+        <div className="lg:flex lg:flex-col lg:pb-3">
           <MovieRating rating={rating} voteCount={voteCount} />
-        </div>
-        <p className="text-description text-sm  lg:order-3">
-          {data?.runtime
-            ? `${Math.floor(data.runtime / 60)}h ${data.runtime % 60}m ⦁ ` +
-              `${(data?.genres || [])
-                .map((genre) => genre.name)
-                .join(", ")} ⦁ ` +
-              `${year}`
-            : ""}
-        </p>
-        <div className=" lg:order-4">
+
+          <p className="text-sm text-description">
+            {data?.runtime
+              ? `${Math.floor(data.runtime / 60)}h ${data.runtime % 60}m ⦁ ` +
+                `${(data?.genres || [])
+                  .map((genre) => genre.name)
+                  .join(", ")} ⦁ ` +
+                `${year}`
+              : ""}
+          </p>
+
           <ReadMore limit={140} text={overview} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -78,8 +90,12 @@ export async function getStaticPaths() {
     fallback: false,
   };
 }
-export async function getStaticProps({ params }: { params: Props }) {
-  const movieId = params;
+export async function getStaticProps({
+  params,
+}: {
+  params: { movieId: Props };
+}) {
+  const movieId = params.movieId;
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_MOVIE_DB_KEY}&languages=en-US`,
   );
@@ -88,7 +104,6 @@ export async function getStaticProps({ params }: { params: Props }) {
   return {
     props: {
       data,
-      movieId,
     },
   };
 }
