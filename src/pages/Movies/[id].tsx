@@ -25,16 +25,16 @@ export default function MoviePage({ movie }: Props) {
 
   return (
     <>
-      <BigPoster isOpen={isOpen} path={movie.backdrop_path}>
+      <BigPoster isOpen={isOpen} path={movie?.backdrop_path}>
         <Description
-          title={movie.title}
-          overview={movie.overview}
-          movieId={movie.id}
-          rating={movie.vote_average}
-          voteCount={movie.vote_count}
+          title={movie?.title}
+          overview={movie?.overview}
+          movieId={movie?.id}
+          rating={movie?.vote_average}
+          voteCount={movie?.vote_count}
         />
 
-        <TopCast movie_id={movie.id} />
+        <TopCast movie_id={movie?.id} />
 
         <MoviesList />
 

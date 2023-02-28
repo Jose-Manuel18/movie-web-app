@@ -1,18 +1,13 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
 
 interface BigPosterProps {
   path: string;
   children: React.ReactNode;
-  isOpen: boolean;
+  isOpen?: boolean;
 }
 
-export const BigPoster: React.FC<BigPosterProps> = ({
-  isOpen,
-  path,
-  children,
-}) => {
+export const BigPoster: React.FC<BigPosterProps> = ({ path, children }) => {
   // const [Open, setOpen] = useState(false);
 
   // useEffect(() => {
