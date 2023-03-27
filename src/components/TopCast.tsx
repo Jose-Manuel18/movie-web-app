@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { LoadingCast } from "./loadings/LoadingCast";
+
 import { SpinningLoader } from "./loadings/SpinningLoader";
 
 export interface TopCastProps {

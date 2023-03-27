@@ -4,7 +4,6 @@ import { MovieRating } from "./MovieRating";
 import { motion } from "framer-motion";
 import { MoviesProps } from "@/pages";
 import { SpinningLoader } from "./loadings/SpinningLoader";
-import { SkeletonLoader } from "./loadings/SkeletonLoader";
 
 export interface DescriptionProps {
   runtime?: number;

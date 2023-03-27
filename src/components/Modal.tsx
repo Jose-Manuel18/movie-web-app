@@ -1,6 +1,4 @@
-import { CloseOutlined } from "@ant-design/icons";
 import { AnimatePresence, motion } from "framer-motion";
-import { IconButton } from "./index";
 
 interface ModalProps {
   Open: boolean;
