@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { LoadingCast } from "./loadings/LoadingCast";
+import { SpinningLoader } from "./loadings/SpinningLoader";
 
 export interface TopCastProps {
   cast?: CastProps[];
@@ -30,8 +31,6 @@ export function TopCast({ movie_id }: TopCastProps) {
   // console.log(amount);
 
   if (error) return null;
-  console.log(isLoading);
-  console.log(data);
 
   // if (isLoading)
   //   return <div className="min-h=[100px] max-h-[100px] bg-notGreen"></div>;
@@ -39,7 +38,7 @@ export function TopCast({ movie_id }: TopCastProps) {
   return (
     <div className=" lg:relative lg:order-last lg:max-h-[200px] lg:min-h-[200px]">
       <h1 className="px-4 text-lg font-medium text-white ">Cast</h1>
-      {isLoading && <LoadingCast amount={10} />}
+      {isLoading && <SpinningLoader />}
       <div className="flex  flex-nowrap overflow-x-auto">
         {data?.cast?.map((items, index) => {
           return (

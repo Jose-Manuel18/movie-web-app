@@ -7,25 +7,29 @@ import {
   Description,
   MoviesList,
   TopCast,
+  VideoPlayer,
 } from "@/components";
-import { MoviesProps } from "../";
+import { MoviesProps, videoProps } from "../";
 
 import { useState } from "react";
 import { Modal } from "@/components/Modal";
+import Custom500 from "../500";
 
 interface Props {
-  movie: MoviesProps;
+  movie?: MoviesProps;
+  video?: videoProps;
+  error: boolean;
 }
 
-export default function MoviePage({ movie }: Props) {
+export default function MoviePage({ movie, video, error }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  // const router = useRouter();
-  // if (!router.isReady) return <div>Loading...</div>;
-  // console.log(router.isReady);
 
+  if (error) {
+    return <Custom500 />;
+  }
   return (
     <>
-      <BigPoster isOpen={isOpen} path={movie?.backdrop_path}>
+      <BigPoster isOpen={isOpen} path={movie && movie.backdrop_path}>
         <Description
           title={movie?.title}
           overview={movie?.overview}
@@ -39,10 +43,20 @@ export default function MoviePage({ movie }: Props) {
         <MoviesList />
 
         <Button onClick={() => setIsOpen(!isOpen)}>Play trailer</Button>
-        <Modal Open={isOpen}>
-          <div>hi</div>
-          <Button onClick={() => setIsOpen(!isOpen)}>Close modal</Button>
-        </Modal>
+        <div className="absolute">
+          <Modal
+            Open={isOpen}
+            toggleClose={() => {
+              setIsOpen(!isOpen);
+              const modal = document.getElementById("modal");
+              if (modal) {
+                modal.removeAttribute("open");
+              }
+            }}
+          >
+            <VideoPlayer videos={video} />
+          </Modal>
+        </div>
       </BigPoster>
     </>
   );
@@ -64,10 +78,28 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   // fetch movie data from API using the id from the URL
   const { id } = params ?? {};
-  const result = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_MOVIE_DB_KEY}&language=en-US`,
-  );
-  // console.log(result.status);
 
-  return { props: { movie: result.data } };
+  try {
+    const [result, videoKey] = await Promise.all([
+      axios.get(
+        `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_MOVIE_DB_KEY}&language=en-US`,
+      ),
+      axios.get(
+        `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.NEXT_PUBLIC_MOVIE_DB_KEY}&language=en-US`,
+      ),
+    ]);
+
+    const trailer = videoKey.data.results.find(
+      (video: videoProps) => video.type === "Trailer",
+    );
+
+    return {
+      props: { movie: result.data, video: trailer || null, error: false },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: { movie: undefined, video: null || undefined, error: true },
+    };
+  }
 };

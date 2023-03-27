@@ -1,5 +1,3 @@
-// import { Icon } from "@chakra-ui/icons"
-
 import Icon from "@ant-design/icons";
 
 import { CSSProperties } from "react";
@@ -10,8 +8,6 @@ interface IconButtonProps {
   spin?: boolean;
   style?: CSSProperties;
 }
-const IconButton: React.FC<IconButtonProps> = ({ ...props }) => {
+export const IconButton: React.FC<IconButtonProps> = ({ ...props }) => {
   return <Icon {...props} />;
 };
-
-export default IconButton;

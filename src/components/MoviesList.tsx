@@ -3,9 +3,9 @@ import Image from "next/image";
 
 import { useQuery } from "@tanstack/react-query";
 
-import { LoadingMovieList } from "./loadings/LoadingMovieList";
 import { motion } from "framer-motion";
 import { MovieData, MoviesProps } from "@/pages";
+import { SpinningLoader } from "./loadings/SpinningLoader";
 
 interface MoviesListProps {
   movies?: MoviesProps;
@@ -13,6 +13,7 @@ interface MoviesListProps {
   title?: string;
   poster_path?: string;
 }
+
 export function MoviesList({ onClick }: MoviesListProps) {
   const { isLoading, error, data } = useQuery<MovieData>(
     ["popularMovies"],
@@ -27,7 +28,7 @@ export function MoviesList({ onClick }: MoviesListProps) {
   return (
     <div>
       <h1 className=" px-4 text-lg font-medium text-white">Movies</h1>
-      {isLoading && <LoadingMovieList amount={10} />}
+      {isLoading && <SpinningLoader />}
       <div className="flex flex-nowrap overflow-x-auto  lg:relative">
         {data?.results.map((items: MoviesProps) => {
           return (
@@ -55,17 +56,16 @@ export function MoviesList({ onClick }: MoviesListProps) {
                     className={` ${
                       window.innerWidth >= 976
                         ? `max-h-[100px] min-h-[100px] min-w-[170px] max-w-[170px]`
-                        : `max-h-[110px] min-h-[75px] min-w-[75px] max-w-[75px] `
+                        : `max-h-[110px] min-h-[110px] min-w-[75px] max-w-[75px] `
                     }   rounded-md `}
-                    alt="Movie props"
                     src={
                       typeof window !== "undefined" && window.innerWidth >= 976
                         ? `https://image.tmdb.org/t/p/original${items.backdrop_path}`
                         : `https://image.tmdb.org/t/p/original${items.poster_path}`
                     }
+                    alt="Movie props"
                     width={75}
-                    height={100}
-                    loading="lazy"
+                    height={110}
                   />
                   <div className="flex  w-[100px] justify-center">
                     <div className="text-center text-[12px] text-white ">

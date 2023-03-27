@@ -36,6 +36,14 @@ export interface MoviesProps {
 export interface MovieData {
   results: MoviesProps[];
 }
+export interface videoProps {
+  id: string;
+  key: string;
+  type: string;
+}
+export interface VideoData {
+  results: videoProps[];
+}
 export default function Home() {
   const movies = {
     id: 505642,

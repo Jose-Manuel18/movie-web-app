@@ -3,6 +3,8 @@ import ReadMore from "@/components/ReadMore";
 import { MovieRating } from "./MovieRating";
 import { motion } from "framer-motion";
 import { MoviesProps } from "@/pages";
+import { SpinningLoader } from "./loadings/SpinningLoader";
+import { SkeletonLoader } from "./loadings/SkeletonLoader";
 
 export interface DescriptionProps {
   runtime?: number;
@@ -40,37 +42,49 @@ export function Description({
   const year = date ? date.getFullYear() : "";
 
   if (error) return null;
-  if (isLoading) return <div className="min-h-[10px]" />;
+  // if (isLoading) return <div className="min-h-[10px]" />;
 
   return (
-    <motion.div
-      animate={{
-        opacity: 1,
-      }}
-      transition={{ duration: 0.5, ease: "easeInOut", damping: 10 }}
-      initial={{ opacity: 0 }}
-      layout
-    >
-      {/* animate__animated animate__fadeIn */}
-      <div className="m-5 flex flex-col lg:max-h-[150px] lg:min-h-[150px]">
-        <p className="pb-2 text-lg font-bold text-white lg:text-5xl">{title}</p>
-        <div className="lg:flex lg:flex-col lg:pb-3">
-          <MovieRating rating={rating} voteCount={voteCount} />
-
-          <p className="text-sm text-description">
-            {data?.runtime
-              ? `${Math.floor(data.runtime / 60)}h ${data.runtime % 60}m ⦁ ` +
-                `${(data?.genres || [])
-                  .map((genre) => genre.name)
-                  .join(", ")} ⦁ ` +
-                `${year}`
-              : ""}
-          </p>
-
-          <ReadMore limit={140} text={overview} />
+    <>
+      {isLoading ? (
+        <div className="pt-10">
+          <SpinningLoader />
         </div>
-      </div>
-    </motion.div>
+      ) : (
+        <motion.div
+          className="mb-2"
+          animate={{
+            opacity: 1,
+          }}
+          transition={{ duration: 0.5, ease: "easeInOut", damping: 10 }}
+          initial={{ opacity: 0 }}
+          layout
+        >
+          <div className="m-5 flex flex-col lg:max-h-[200px] lg:min-h-[150px]">
+            <p className="pb-2 text-lg font-bold text-white lg:text-5xl">
+              {title}
+            </p>
+            <div className="lg:flex lg:flex-col lg:pb-3">
+              <MovieRating rating={rating} voteCount={voteCount} />
+
+              <p className="text-sm text-description">
+                {data?.runtime
+                  ? `${Math.floor(data.runtime / 60)}h ${
+                      data.runtime % 60
+                    }m ⦁ ` +
+                    `${(data?.genres || [])
+                      .map((genre) => genre.name)
+                      .join(", ")} ⦁ ` +
+                    `${year}`
+                  : ""}
+              </p>
+
+              <ReadMore limit={120} text={overview} />
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </>
   );
 }
 

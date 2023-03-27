@@ -1,17 +1,20 @@
+import { CloseOutlined } from "@ant-design/icons";
 import { AnimatePresence, motion } from "framer-motion";
+import { IconButton } from "./index";
 
 interface ModalProps {
   Open: boolean;
   children: React.ReactNode;
+  toggleClose: () => void;
 }
 
-export function Modal({ Open, children }: ModalProps) {
+export function Modal({ Open, children, toggleClose }: ModalProps) {
   return (
     <AnimatePresence>
       {Open && (
         <>
           <motion.div
-            className="fixed inset-0 flex items-center justify-center"
+            className=" flex items-center justify-center "
             initial={{
               opacity: 0,
             }}
@@ -27,9 +30,10 @@ export function Modal({ Open, children }: ModalProps) {
                 duration: 0.3,
               },
             }}
+            onClick={toggleClose}
           >
             <motion.div
-              className="fixed inset-0 bg-black bg-opacity-60"
+              className="fixed inset-0  bg-backgroundColor bg-opacity-60"
               initial={{
                 opacity: 0,
               }}
@@ -67,7 +71,7 @@ export function Modal({ Open, children }: ModalProps) {
                 },
               }}
             >
-              <div className="flex max-h-[500px] min-h-[500px] min-w-[500px] items-center justify-center rounded-lg bg-white p-6">
+              <div className=" flex min-w-[500px] items-center justify-center rounded-lg bg-body p-1">
                 {children}
               </div>
             </motion.div>
