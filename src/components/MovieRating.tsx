@@ -1,4 +1,4 @@
-import { HeartOutlined, ShareAltOutlined, StarFilled } from "@ant-design/icons";
+import { StarFilled } from "@ant-design/icons";
 import { IconButton } from "./index";
 interface RatingProps {
   rating?: number;
@@ -18,11 +18,6 @@ export const MovieRating = ({ rating, voteCount }: RatingProps) => {
           <p className="mr-1 text-sm font-bold text-white">{`${rating} `}</p>
           <p className="text-sm text-description"> {`| ${voteCount}`}</p>
         </div>
-      </div>
-      <div className="ml-auto flex space-x-4">
-        <IconButton style={{ color: "white" }} component={HeartOutlined} />
-        <IconButton style={{ color: "white" }} component={ShareAltOutlined} />
-        <IconButton style={{ color: "white" }} component={HeartOutlined} />
       </div>
     </div>
   );

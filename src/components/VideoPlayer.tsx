@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useLayoutEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { AnimatedCircleLoader } from "./loadings/AnimatedCircleLoader";
-import { SpinningLoader } from "./loadings/SpinningLoader";
+
 import { NoTrailer } from "./NoTrailer";
 
 interface Video {

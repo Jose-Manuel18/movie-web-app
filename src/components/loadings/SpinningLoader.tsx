@@ -1,6 +1,3 @@
-import { motion, useMotionValue } from "framer-motion";
-import { useEffect } from "react";
-
 export function SpinningLoader() {
   return (
     <div className="flex items-center justify-center px-[100px] py-[50px]">
