@@ -5,9 +5,9 @@ interface NoTrailerProps {
   message?: string;
 }
 
-export const NoTrailer: React.FC<NoTrailerProps> = ({
+export const NoTrailer = ({
   message = "No trailers available",
-}) => {
+}: NoTrailerProps) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}

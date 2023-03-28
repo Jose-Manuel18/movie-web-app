@@ -13,7 +13,6 @@
     "@ant-design/icons": "^5.0.1",
     "@tanstack/react-query": "^4.24.4",
     "@types/react": "^18.0.28",
-    "@videojs/http-streaming": "^2.16.2",
     "animate.css": "^4.1.1",
     "axios": "^1.3.2",
     "eslint": "8.33.0",
@@ -24,10 +23,8 @@
     "react": "18.2.0",
     "react-content-loader": "^6.2.0",
     "react-dom": "18.2.0",
-    "react-responsive-carousel": "^3.2.23",
-    "react-youtube": "^10.1.0",
-    "typescript": "^4.9.5",
-    "video.js": "^8.0.4"
+    "react-player": "^2.12.0",
+    "typescript": "^4.9.5"
   },
   "devDependencies": {
     "@types/node": "^18.14.2",

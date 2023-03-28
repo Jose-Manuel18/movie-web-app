@@ -7,7 +7,7 @@ interface BigPosterProps {
   isOpen?: boolean;
 }
 
-export const BigPoster: React.FC<BigPosterProps> = ({ path, children }) => {
+export const BigPoster = ({ path, children }: BigPosterProps) => {
   return (
     <div className=" min-h-screen overflow-y-hidden bg-backgroundColor lg:relative ">
       {/* Background image */}

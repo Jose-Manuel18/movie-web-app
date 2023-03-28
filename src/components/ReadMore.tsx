@@ -3,7 +3,7 @@ interface ReadMoreProps {
   text?: string;
   limit: number;
 }
-const ReadMore = ({ text, limit }: ReadMoreProps) => {
+export const ReadMore = ({ text, limit }: ReadMoreProps) => {
   const [expanded, setExpanded] = useState(false);
   const [truncatedText, setTruncatedText] = useState(
     text ? text.slice(0, limit) + "..." : "",
@@ -27,5 +27,3 @@ const ReadMore = ({ text, limit }: ReadMoreProps) => {
     </div>
   );
 };
-
-export default ReadMore;

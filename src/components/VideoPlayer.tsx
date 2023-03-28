@@ -1,5 +1,8 @@
-import { useLayoutEffect, useState } from "react";
-import YouTube from "react-youtube";
+import { motion } from "framer-motion";
+import { useEffect, useLayoutEffect, useState } from "react";
+import ReactPlayer from "react-player";
+import { AnimatedCircleLoader } from "./loadings/AnimatedCircleLoader";
+import { SpinningLoader } from "./loadings/SpinningLoader";
 import { NoTrailer } from "./NoTrailer";
 
 interface Video {
@@ -13,6 +16,8 @@ interface VideoPlayerProps {
 }
 
 export function VideoPlayer({ videos }: VideoPlayerProps) {
+  const [isReady, setIsReady] = useState(false);
+  const [showPlayer, setShowPlayer] = useState(false);
   const [width, setWidth] = useState<number>(640);
   const [height, setHeight] = useState<number>(390);
 
@@ -23,14 +28,14 @@ export function VideoPlayer({ videos }: VideoPlayerProps) {
       let newHeight = 390;
 
       if (windowWidth >= 1440) {
-        newWidth = 1280;
-        newHeight = 720;
+        newWidth = 640;
+        newHeight = 390;
       } else if (windowWidth >= 976) {
-        newWidth = 896;
-        newHeight = 504;
+        newWidth = 640;
+        newHeight = 390;
       } else if (windowWidth >= 768) {
-        newWidth = 704;
-        newHeight = 396;
+        newWidth = 640;
+        newHeight = 390;
       } else {
         newWidth = windowWidth - 40;
         newHeight = Math.round((newWidth / 16) * 9);
@@ -46,19 +51,43 @@ export function VideoPlayer({ videos }: VideoPlayerProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setIsReady(true);
+      setShowPlayer(true);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
   if (!videos) {
     return <NoTrailer message="No trailer for this movie" />;
   }
 
   return (
-    <div>
-      <YouTube
-        loading="eager"
-        key={videos.id}
-        videoId={videos.key}
-        opts={{ height, width, playerVars: { autoplay: 0 } }}
-        className="sm:h-auto sm:w-full"
-      />
+    <div className="flex items-center justify-center">
+      {!isReady ? (
+        <AnimatedCircleLoader />
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: showPlayer ? 1 : 0,
+            transition: { duration: 1 },
+          }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          style={{ opacity: showPlayer ? 1 : 0 }}
+        >
+          <ReactPlayer
+            url={`https://www.youtube.com/watch?v=${videos.key}`}
+            width={width}
+            height={height}
+            controls={true}
+          />
+        </motion.div>
+      )}
     </div>
   );
 }

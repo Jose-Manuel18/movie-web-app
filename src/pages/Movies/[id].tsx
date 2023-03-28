@@ -27,6 +27,7 @@ export default function MoviePage({ movie, video, error }: Props) {
   if (error) {
     return <Custom500 />;
   }
+
   return (
     <>
       <BigPoster isOpen={isOpen} path={movie && movie.backdrop_path}>
@@ -42,7 +43,7 @@ export default function MoviePage({ movie, video, error }: Props) {
 
         <MoviesList />
 
-        <Button onClick={() => setIsOpen(!isOpen)}>Play trailer</Button>
+        <Button onClick={() => setIsOpen(!isOpen)}>Watch trailer</Button>
         <div className="absolute">
           <Modal
             Open={isOpen}

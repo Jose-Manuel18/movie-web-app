@@ -1,9 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import ReadMore from "@/components/ReadMore";
-import { MovieRating } from "./MovieRating";
 import { motion } from "framer-motion";
 import { MoviesProps } from "@/pages";
-import { SpinningLoader } from "./loadings/SpinningLoader";
+import { ReadMore, SpinningLoader, MovieRating } from ".";
 
 export interface DescriptionProps {
   runtime?: number;

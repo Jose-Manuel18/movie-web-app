@@ -8,6 +8,6 @@ interface IconButtonProps {
   spin?: boolean;
   style?: CSSProperties;
 }
-export const IconButton: React.FC<IconButtonProps> = ({ ...props }) => {
+export const IconButton = ({ ...props }: IconButtonProps) => {
   return <Icon {...props} />;
 };
