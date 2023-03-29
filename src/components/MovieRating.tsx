@@ -5,6 +5,7 @@ interface RatingProps {
   voteCount?: number;
 }
 export const MovieRating = ({ rating, voteCount }: RatingProps) => {
+  console.log("rating:", rating);
   return (
     <div className="flex items-center  ">
       <div className="flex space-x-2">
