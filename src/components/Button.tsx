@@ -1,3 +1,4 @@
+import { useDescriptionContext } from "@/context/DescriptionContext";
 import { motion } from "framer-motion";
 
 interface ButtonProps {
@@ -6,13 +7,20 @@ interface ButtonProps {
 }
 
 export const Button = ({ children, onClick }: ButtonProps) => {
+  const { isTruncated } = useDescriptionContext();
   const transition = {
     type: "spring",
     stiffness: 400,
     damping: 10,
   };
+  console.log(isTruncated);
+
   return (
-    <div className="relative mx-6">
+    <div
+      className={`relative lg:pl-[16px]  ${
+        isTruncated ? "lg:mt-[88px]" : "lg:mt-[32px]"
+      }`}
+    >
       <motion.div
         layout
         whileTap={{ scale: 0.9 }}
@@ -21,7 +29,7 @@ export const Button = ({ children, onClick }: ButtonProps) => {
       >
         <div
           onClick={onClick}
-          className="flex h-16 w-full cursor-pointer items-center justify-center rounded-md  bg-notBlue lg:mt-5 lg:h-14 lg:w-[450px]"
+          className="z-0 flex h-16 w-full cursor-pointer items-center justify-center rounded-md bg-notBlue  lg:h-14 lg:w-[450px] "
         >
           <div className="text-white">{children}</div>
         </div>

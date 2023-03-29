@@ -27,7 +27,7 @@ export interface MoviesProps {
   original_language?: string;
   original_title?: string;
   overview?: string;
-  poster_path?: string;
+  poster_path: string;
   release_date?: string;
   title?: string;
   video?: boolean;
@@ -61,6 +61,7 @@ export default function Home() {
       type: "Trailer",
     },
   };
+  console.log(movies.poster_path);
 
   return (
     <BigPoster path={movies.poster_path}>

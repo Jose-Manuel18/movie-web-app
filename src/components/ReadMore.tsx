@@ -1,3 +1,4 @@
+import { useDescriptionContext } from "@/context/DescriptionContext";
 import { useEffect, useState } from "react";
 interface ReadMoreProps {
   text?: string;
@@ -5,6 +6,7 @@ interface ReadMoreProps {
 }
 export const ReadMore = ({ text, limit }: ReadMoreProps) => {
   const [expanded, setExpanded] = useState(false);
+  const { setIsTruncated } = useDescriptionContext();
   const [truncatedText, setTruncatedText] = useState(
     text ? text.slice(0, limit) + "..." : "",
   );
@@ -19,7 +21,10 @@ export const ReadMore = ({ text, limit }: ReadMoreProps) => {
         {expanded ? text?.slice(0, 500) || "" : truncatedText}
         <button
           className="hover:text-primary-600 font-medium text-[#797b8a] "
-          onClick={() => setExpanded(!expanded)}
+          onClick={() => {
+            setExpanded(!expanded);
+            setIsTruncated(!expanded);
+          }}
         >
           {expanded ? " Read less" : " Read more"}
         </button>
