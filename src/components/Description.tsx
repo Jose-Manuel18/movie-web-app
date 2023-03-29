@@ -37,7 +37,7 @@ export function Description({
   const release_date = data?.release_date;
   const date = release_date ? new Date(release_date) : undefined;
   const year = date ? date.getFullYear() : "";
-
+  const voteAverage = Number(rating?.toFixed(1));
   if (error) return null;
   // if (isLoading) return <div className="min-h-[10px]" />;
 
@@ -62,7 +62,7 @@ export function Description({
               {title}
             </p>
             <div className="lg:flex lg:flex-col lg:pb-3">
-              <MovieRating rating={rating} voteCount={voteCount} />
+              <MovieRating rating={voteAverage} voteCount={voteCount} />
 
               <p className="text-sm text-description">
                 {data?.runtime
