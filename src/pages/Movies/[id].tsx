@@ -27,7 +27,6 @@ export default function MoviePage({ movie, video, error }: Props) {
   if (error) {
     return <Custom500 />;
   }
-  console.log(movie);
 
   return (
     <>

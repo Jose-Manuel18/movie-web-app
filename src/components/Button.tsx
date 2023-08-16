@@ -13,7 +13,6 @@ export const Button = ({ children, onClick }: ButtonProps) => {
     stiffness: 400,
     damping: 10,
   };
-  console.log(isTruncated);
 
   return (
     <div

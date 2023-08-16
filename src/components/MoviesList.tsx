@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { MovieData, MoviesProps } from "@/pages";
 import { SpinningLoader } from "./loadings/SpinningLoader";
+import { CSSProperties, PointerEventHandler, useRef, useState } from "react";
+import { Carousel } from "./Carousel";
 
 interface MoviesListProps {
   movies?: MoviesProps;
@@ -15,6 +17,10 @@ interface MoviesListProps {
 }
 
 export function MoviesList({ onClick }: MoviesListProps) {
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+
+  const containerRef = useRef<HTMLDivElement>(null);
   const { isLoading, error, data } = useQuery<MovieData>(
     ["popularMovies"],
     async () =>
@@ -24,6 +30,7 @@ export function MoviesList({ onClick }: MoviesListProps) {
   );
   // const amount = data && data.results ? data.results.length : 10;
   if (error) return null;
+  console.log(isDragging);
 
   return (
     <div>
@@ -32,10 +39,17 @@ export function MoviesList({ onClick }: MoviesListProps) {
       {isLoading ? (
         <SpinningLoader />
       ) : (
-        <div className="flex flex-nowrap overflow-x-auto  lg:relative">
-          {data?.results.map((items: MoviesProps) => {
+        <div
+          style={{ cursor: "grab" }}
+          className="flex flex-nowrap overflow-x-auto  lg:relative"
+          ref={containerRef}
+        >
+          {data?.results.map((items: MoviesProps, index: number) => {
             return (
               <Link
+                onDrag={(e) => {
+                  e.preventDefault();
+                }}
                 key={items.id}
                 href={{
                   pathname: `/Movies/[id]`,
@@ -56,6 +70,34 @@ export function MoviesList({ onClick }: MoviesListProps) {
                     onClick={onClick}
                   >
                     <Image
+                      onMouseDown={(e) => {
+                        if (containerRef.current) {
+                          containerRef.current.style.cursor = "grab";
+                          setIsDragging(true);
+                          setStartX(e.clientX);
+                        }
+                      }}
+                      onMouseUp={() => {
+                        if (containerRef.current) {
+                          containerRef.current.style.cursor = "grab";
+                          setIsDragging(false);
+                        }
+                      }}
+                      onMouseMove={(e) => {
+                        if (containerRef.current) {
+                          if (!isDragging) return;
+                          e.preventDefault();
+                          const x = e.clientX;
+                          containerRef.current.scrollLeft -= x - startX;
+                          setStartX(x);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (containerRef.current) {
+                          containerRef.current.style.cursor = "grab";
+                          setIsDragging(false);
+                        }
+                      }}
                       className={` ${
                         window.innerWidth >= 976
                           ? `max-h-[100px] min-h-[100px] min-w-[170px] max-w-[170px]`
@@ -71,6 +113,7 @@ export function MoviesList({ onClick }: MoviesListProps) {
                       width={75}
                       height={110}
                     />
+
                     <div className="flex  w-[100px] justify-center">
                       <div className="text-center text-[12px] text-white ">
                         {items.title}
